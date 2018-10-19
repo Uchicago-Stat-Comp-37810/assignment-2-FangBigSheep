@@ -1,5 +1,5 @@
 ######################################################################
-likelihood <- function(param){
+likelihood <- function(param, x, y){
   
   # Calculation of likelyhood
   a = param[1]
@@ -40,8 +40,8 @@ prior <- function(param){
 ######################################################################
 
 # Posterior distribution
-posterior <- function(param){
-  return (likelihood(param) + prior(param))
+posterior <- function(param, x, y){
+  return (likelihood(param, x, y) + prior(param))
   # add up the log-likelihood of prior and posterior distribution together
 }
 
@@ -61,7 +61,7 @@ proposalfunction <- function(param){
 }
 # add Gaussian noise
 
-run_metropolis_MCMC <- function(startvalue, iterations){
+run_metropolis_MCMC <- function(startvalue, iterations, x, y){
   chain = array(dim = c(iterations + 1, 3))
   # chain[] contains all result
   chain[1, ] = startvalue
@@ -71,7 +71,14 @@ run_metropolis_MCMC <- function(startvalue, iterations){
     proposal = proposalfunction(chain[i, ])
     # a new sample based on the result of the last iteration
     
-    probab = exp(posterior(proposal) - posterior(chain[i, ]))
+    probab = exp(posterior(proposal, x, y) - posterior(chain[i, ], x, y))
+    
+    # sometimes the posterior is too small that log(posterior) -> -INF
+    # this can only happen when the proposal is bad
+    # thus if this occurs, we set the probability to 0 
+    # because exp(-INF) -> 0
+    if (is.nan(probab)) probab <- 0
+    
     # calculate probability of acceptance of the new sample
     if (runif(1) < probab) # accept new sample
       chain[i + 1, ] = proposal
@@ -116,4 +123,50 @@ summaryGraphing <- function(chain, burnIn, param) {
   plot(chain[-(1:burnIn),3], type = "l", xlab="True value = red line" , main = "Chain values of sd")
   abline(h = trueSd, col="red" )
   # plot the sample values and true values of a, b, and sd in iteration 5000 ~ 10000
+}
+
+compare_outcomes <- function(iteration) {
+  for (TestCase in 1: 10) {
+    # Creating test data from the prior distrubution
+    trueA = runif(1, min = 0, max = 10)
+    trueB = rnorm(1, sd = 5)
+    trueSd = runif(1, min = 0, max = 30)
+    
+    # sampling data
+    sampleSize <- 31
+    # create independent x-values 
+    x <- (-(sampleSize - 1) / 2): ((sampleSize - 1) / 2)
+    # create dependent values according to ax + b + N(0,sd)
+    y <-  trueA * x + trueB + rnorm(n = sampleSize, mean = 0, sd = trueSd)
+    
+    ######################################################################
+    startvalue <- c(4,0,10)
+    chain <- run_metropolis_MCMC(startvalue, iteration, x, y)
+    # run Metropolis_MCMC for given number of iterations
+    
+    burnIn <- iteration / 2
+    acceptance <- 1 - mean(duplicated(chain[-(1: burnIn), ]))
+    # remove the first half of the iterations
+    
+    # summary Without graphing
+    # the distribution of A, B, and sd
+    Amean  <- mean(chain[-(1: burnIn), 1])
+    Bmean  <- mean(chain[-(1: burnIn), 2])
+    SDmean <- mean(chain[-(1: burnIn), 3])
+    stdA  <- sqrt(sum((chain[-(1: burnIn), 1] - Amean) ^ 2))
+    stdB  <- sqrt(sum((chain[-(1: burnIn), 2] - Bmean) ^ 2))
+    stdSD <- sqrt(sum((chain[-(1: burnIn), 3] - SDmean) ^ 2))
+    
+    cat(sprintf("Loop: %d\n", TestCase))
+    cat(sprintf("A: mean = %f, std = %f\n", Amean, stdA))
+    # cat(sprintf("B: mean = %f, std = %f\n", Bmean, stdB))
+    # cat(sprintf("sd: mean = %f, std = %f\n", SDmean, stdSD))
+    
+    
+    # compared with the result of linear model
+    # summary <- summary(lm(y ~ x))
+    
+    # print(summary$coeffients[ , 1: 2])
+    # print(summary$sigma)
+  }
 }
