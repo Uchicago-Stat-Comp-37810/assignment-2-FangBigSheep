@@ -131,38 +131,39 @@ $(document).ready(function () {
 
 <p>For different iteration numbers (1000, 10000, or 100000), my function loops 10 times; each time, it initializes the MCMC chain with randomly selected start values for a, b, and sd and then runs to completion after the required number of iterations. After each loop, the function computes the mean and std of the values in the chain for a, and it prints these out. The result is listed below.</p>
 <pre class="r"><code>compare_outcomes(1000)</code></pre>
-<pre><code>##              Loop 1    Loop 2    Loop 3    Loop 4   Loop 5   Loop 6
-## MCMC_mean 2.1656591 5.7834685 0.5764892 7.0563294 1.934424 2.196610
-## MCMC_std  7.4086433 8.2845683 7.6190581 7.4123590 8.813309 8.413631
-## lm_mean   2.2075670 5.7114564 0.8893697 7.1289919 1.993835 2.288964
-## lm_std    0.4769473 0.4535911 0.7654228 0.3100808 0.447218 0.507419
-##              Loop 7    Loop 8    Loop 9    Loop 10
-## MCMC_mean  8.714680 5.5261921 8.2864953  2.9076431
-## MCMC_std  13.301686 4.3355122 3.9592218 11.9127548
-## lm_mean    8.618419 5.5302151 8.2703291  2.9934800
-## lm_std     0.604184 0.1691236 0.2075304  0.5414303</code></pre>
+<pre><code>##            Loop 1    Loop 2    Loop 3    Loop 4     Loop 5    Loop 6
+## MH_mean 5.0122668 3.2807268 7.5576244 0.4364317 4.01439129 2.6034646
+## MH_std  0.1187018 0.3396813 0.2862961 0.2332430 0.06375646 0.1034468
+## lm_mean 5.0589246 3.1304746 7.6439651 0.1981048 4.02602788 2.5962058
+## lm_std  0.1280711 0.4907322 0.2144252 0.3612750 0.06985994 0.1031412
+##            Loop 7     Loop 8    Loop 9    Loop 10
+## MH_mean 1.1225364 8.96369190 5.1439862 1.69374336
+## MH_std  0.3088057 0.01681250 0.3877768 0.01048386
+## lm_mean 0.9832293 8.96396428 5.2302952 1.69832692
+## lm_std  0.4556249 0.01430555 0.4476239 0.01053954</code></pre>
 <pre class="r"><code>compare_outcomes(10000)</code></pre>
-<pre><code>##              Loop 1     Loop 2     Loop 3      Loop 4     Loop 5
-## MCMC_mean  8.941629  9.5919836  0.6845809 5.759726556  1.3306265
-## MCMC_std  12.209705 22.1238215 28.7814044 0.362434977 30.0336933
-## lm_mean    8.939091  9.9979452  0.5468721 5.759451931  1.3269756
-## lm_std     0.167179  0.4390197  0.5652664 0.003434088  0.4134894
-##               Loop 6     Loop 7     Loop 8     Loop 9    Loop 10
-## MCMC_mean  0.6228699  3.1679510  2.5528543  6.9145758  4.8321135
-## MCMC_std  27.4291716 10.3009800 19.4000667 37.9850483 21.8331144
-## lm_mean    0.5192936  3.1754282  2.5296587  6.8414915  4.8011800
-## lm_std     0.4389017  0.1271025  0.2739862  0.6562341  0.2999321</code></pre>
+<pre><code>##            Loop 1    Loop 2    Loop 3   Loop 4        Loop 5    Loop 6
+## MH_mean 4.9738959 1.4097482 5.0622654 4.750944  0.4477383428 3.1356384
+## MH_std  0.2756614 0.4641053 0.4732803 0.113566  0.3136754350 0.2368102
+## lm_mean 4.9767026 1.3283043 5.0848339 4.752330 -0.0004883152 3.1068165
+## lm_std  0.2573104 0.4522152 0.4156179 0.104839  0.5806212521 0.1988616
+##            Loop 7    Loop 8     Loop 9   Loop 10
+## MH_mean 6.0776422 3.3404556 6.49343599 1.3592797
+## MH_std  0.5254491 0.1797261 0.09487057 0.2231795
+## lm_mean 6.1570811 3.3427708 6.49711177 1.3226357
+## lm_std  0.4563132 0.1752853 0.09166420 0.2152477</code></pre>
 <pre class="r"><code>compare_outcomes(100000)</code></pre>
-<pre><code>##               Loop 1      Loop 2      Loop 3     Loop 4      Loop 5
-## MCMC_mean  2.3335613   0.8265051   2.8405470  9.4695289   8.7556285
-## MCMC_std  26.4234973 101.6505601 120.0784845 34.9653200 117.8355877
-## lm_mean    2.3360392   0.7824301   2.8305976  9.4746446   8.7007925
-## lm_std     0.1121074   0.5666045   0.5169879  0.1471516   0.7160704
-##                Loop 6     Loop 7      Loop 8      Loop 9   Loop 10
-## MCMC_mean   2.7767777  4.6329539   4.9412171 0.609738926  6.990138
-## MCMC_std  101.5893446 56.0119488 123.0654490 1.730133091 35.637861
-## lm_mean     2.7647711  4.6325563   4.9839888 0.609905716  6.985722
-## lm_std      0.4435338  0.2419893   0.5556396 0.007034029  0.150704</code></pre>
+<pre><code>##            Loop 1    Loop 2    Loop 3    Loop 4    Loop 5    Loop 6
+## MH_mean 9.5397290 6.7572164 7.0166656 6.3429264 3.0935395 7.2026931
+## MH_std  0.3331913 0.1957475 0.4182331 0.1522952 0.2145125 0.1876233
+## lm_mean 9.8380013 6.7622455 7.0424061 6.3422409 3.0859365 7.2031486
+## lm_std  0.4653102 0.1846087 0.3962982 0.1467123 0.2056608 0.1776651
+##            Loop 7    Loop 8    Loop 9   Loop 10
+## MH_mean 0.5524405 7.2869679 3.1402049 1.4661456
+## MH_std  0.2141987 0.1262171 0.3337880 0.2521982
+## lm_mean 0.5452377 7.2917515 3.1339933 1.4665114
+## lm_std  0.2166186 0.1178309 0.3249859 0.2471742</code></pre>
+<p>Metropolis-Hasting shows good accurary. For mean of A, the result of MH is closed to the result of linear model. The standard deviance in MH and in linear model are also closed, which indicates that the accurary of MH in estimating A is similar to the linear model.</p>
 
 
 

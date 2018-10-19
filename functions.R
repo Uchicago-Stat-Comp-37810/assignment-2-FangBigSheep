@@ -156,9 +156,9 @@ compare_outcomes <- function(iteration) {
     Amean  <- mean(chain[-(1: burnIn), 1])
     Bmean  <- mean(chain[-(1: burnIn), 2])
     SDmean <- mean(chain[-(1: burnIn), 3])
-    stdA  <- sqrt(sum((chain[-(1: burnIn), 1] - Amean) ^ 2))
-    stdB  <- sqrt(sum((chain[-(1: burnIn), 2] - Bmean) ^ 2))
-    stdSD <- sqrt(sum((chain[-(1: burnIn), 3] - SDmean) ^ 2))
+    stdA  <- sqrt(sum((chain[-(1: burnIn), 1] - Amean) ^ 2) / (iteration - burnIn))
+    stdB  <- sqrt(sum((chain[-(1: burnIn), 2] - Bmean) ^ 2) / (iteration - burnIn))
+    stdSD <- sqrt(sum((chain[-(1: burnIn), 3] - SDmean) ^ 2) / (iteration - burnIn))
     
     result[1, TestCase] <- Amean
     result[2, TestCase] <- stdA
@@ -175,7 +175,7 @@ compare_outcomes <- function(iteration) {
     result[4, TestCase] <- as.numeric(my_summary$coefficients[2, 2])
     #print(summary$sigma)
   }
-  result <- data.frame(result, row.names = c('MCMC_mean', 'MCMC_std', 'lm_mean', 'lm_std'))
+  result <- data.frame(result, row.names = c('MH_mean', 'MH_std', 'lm_mean', 'lm_std'))
   
   nms <- c(1)
   length(nms) <- 10
