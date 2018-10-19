@@ -1,3 +1,14 @@
+---
+title: "STAT 37810 HW 3 - experiment result"
+author: "ZY Fang"
+date: "10/19/2018"
+output: html_document
+---
+
+For different iteration numbers (1000, 10000, or 100000), my function loops 10 times; each time, it initializes the MCMC chain with randomly selected start values for a, b, and sd and then runs to completion after the required number of iterations. After each loop, the function computes the mean and std of the values in the chain for a, and it prints these out. The result is listed below.
+
+```{r, echo = FALSE}
+######################################################################
 ######################################################################
 likelihood <- function(param, x, y){
   
@@ -186,3 +197,10 @@ compare_outcomes <- function(iteration) {
   
   return (result)
 }
+```
+
+```{r, warning=FALSE}
+compare_outcomes(1000)
+compare_outcomes(10000)
+compare_outcomes(100000)
+```
